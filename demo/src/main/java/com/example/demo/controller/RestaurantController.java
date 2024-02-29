@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/restaurant")
 public class RestaurantController {
     @Autowired
     RestaurantService restaurantService;
@@ -58,5 +58,26 @@ public class RestaurantController {
         {
             return "Id Not Found Enter the correct Id to be Deleted";
         }
+    }
+    //Sort
+    @GetMapping("/display/{name}")
+    public List<RestaurantBooking> getByFlightNameSorted(@PathVariable("name") String name)
+    {
+        List<RestaurantBooking> restaurantList = restaurantService.sortByRestaurantBookingName(name);
+        return restaurantList;
+    }
+    //pagination
+    @GetMapping("/display/{pageSize}/{pageNumber}")
+    public List<RestaurantBooking> getPagination(@PathVariable("pageSize") int pageSize,@PathVariable("pageNumber") int pageNumber)
+    {
+        List<RestaurantBooking> restaurantList = restaurantService.paginationOfRestaurantBookings(pageSize, pageNumber);
+        return restaurantList;
+    }
+    //pagination + sorting
+    @GetMapping("/display/{pageSize}/{pageNumber}/{field}")
+    public List<RestaurantBooking> getPaginationandSort(@PathVariable("pageSize") int pageSize,@PathVariable("pageNumber") int pageNumber,@PathVariable("field") String field)
+    {
+        List<RestaurantBooking> restaurantList = restaurantService.SortAndPagenation(pageSize, pageNumber, field);
+        return restaurantList;
     }
 }
